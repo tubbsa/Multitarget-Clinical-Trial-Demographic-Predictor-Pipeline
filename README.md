@@ -44,4 +44,78 @@ The pipeline consists of the following stages:
 ---
 
 ## Repository Structure
+├── src/harry_ml/ # Core ML pipeline (installable package)
+│ ├── cleaning.py
+│ ├── features_structured.py
+│ ├── features_text.py
+│ ├── split.py
+│ ├── train.py
+│ ├── hurdle.py
+│ ├── infer.py
+│ ├── metrics.py
+│ ├── ood.py
+│ ├── artifacts.py
+│ └── io.py
+│
+├── scripts/ # Reproducible runners
+│ ├── train_model.py
+│ ├── evaluate.py # Regenerates Table V
+│ ├── run_baselines.py
+│ ├── run_shap.py
+│ └── run_ood.py
+│
+├── notebooks/ # Exploratory / development notebooks
+├── data/ # (not tracked)
+├── artifacts/ # (not tracked)
+├── README.md
+├── LICENSE
+└── pyproject.toml
 
+---
+
+## Installation
+
+Python ≥ 3.9 is required.
+
+```bash
+pip install -e .
+Training
+Train the full pipeline and write frozen artifacts:
+python scripts/train_model.py \
+  --data path/to/trials.csv \
+  --out artifacts/harry_v1 \
+  --targets "White %" "Black %" "Asian %" "AIAN %" "NHPI %" \
+            "Male %" "Female %" "Age 65+ %" \
+  --sparse-targets "AIAN %" "NHPI %"
+Artifacts include trained models, encoders, schema manifests, and split metadata.
+Evaluation (Table V)
+Regenerate per-target RMSE / MAE across train, test, and holdout splits:
+python scripts/evaluate.py \
+  --data path/to/trials.csv \
+  --artifacts artifacts/harry_v1 \
+  --targets "White %" "Black %" "Asian %" "AIAN %" "NHPI %" \
+            "Male %" "Female %" "Age 65+ %" \
+  --out table_v.csv
+Baselines
+Run baseline models described in the paper:
+python scripts/run_baselines.py \
+  --data path/to/trials.csv \
+  --targets "White %" "Black %" "Asian %" "AIAN %" "NHPI %" \
+            "Male %" "Female %" "Age 65+ %" \
+  --sparse-targets "AIAN %" "NHPI %" \
+  --out baselines.csv
+Interpretability (SHAP)
+Compute SHAP summaries used in the interpretability analysis:
+python scripts/run_shap.py \
+  --data path/to/trials.csv \
+  --artifacts artifacts/harry_v1 \
+  --targets "White %" "Black %" "Asian %" "AIAN %" "NHPI %" \
+            "Male %" "Female %" "Age 65+ %" \
+  --outdir shap_outputs
+Outputs are figure-ready CSVs.
+Out-of-Distribution Screening
+Fit OOD statistics on the training split and score all trials:
+python scripts/run_ood.py \
+  --data path/to/trials.csv \
+  --ood-cols eligibility_min_age eligibility_max_age num_sites enrollment_count trial_duration_days \
+  --out ood_scores.csv
