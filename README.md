@@ -1,5 +1,5 @@
 # Multitarget-Clinical-Trial-Demographic-Predictor-Pipeline
-# Multitarget Clinical Trial Demographic Predictor Pipeline
+
 
 
 The code implements a modular, reproducible pipeline that maps clinical trial protocol metadata to **predicted demographic enrollment proportions** across race, sex, and age groups.
