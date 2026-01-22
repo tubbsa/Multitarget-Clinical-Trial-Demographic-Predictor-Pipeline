@@ -1,20 +1,60 @@
-# data
+# ============================================================
+# Python
+# ============================================================
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+
+# Packaging / installs
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# ============================================================
+# Jupyter / notebooks
+# ============================================================
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# ============================================================
+# OS / editor junk
+# ============================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ============================================================
+# Project-specific (Harry ML)
+# ============================================================
+
+# Training outputs / models
+artifacts/
+models/
+
+# Raw or intermediate datasets
 data/
 *.csv
 *.parquet
+*.feather
+*.xlsx
 
-# model artifacts
-artifacts/
-*.pkl
-*.joblib
-*.cbm
+# Logs
+*.log
 
-# notebook junk
-.ipynb_checkpoints/
-**/.DS_Store
-
-# python
-__pycache__/
-*.pyc
-.venv/
+# Secrets / env
 .env
+.env.*
+
+# ============================================================
+# Temporary files
+# ============================================================
+*.tmp
+*.swp
+*~
